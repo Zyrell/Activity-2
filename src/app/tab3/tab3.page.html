@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title style="font-size: 15px; color: tomato;">
+      Contact
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title>Contact List</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card class="main">
+    <ion-card-content>
+      <ion-item id="name">
+        <ion-label position="floating">Name</ion-label>
+        <ion-input [(ngModel)]="contname" enterkeyhint="search"></ion-input>
+      </ion-item>
+      <ion-item id="familyname">
+        <ion-label position="floating">Family Name</ion-label>
+        <ion-input [(ngModel)]="contfname"></ion-input>
+      </ion-item>
+      <ion-item id="number">
+        <ion-label position="floating">Contact Number</ion-label>
+        <ion-input [(ngModel)]="contnumber"></ion-input>
+      </ion-item>
+      <br />
+      <ion-button expand="full" fill="solid" shape="" (click)="saveC()" id="save">Save</ion-button>
+      <br>
+
+      <ion-list>
+        <!-- Multi-line sliding item with icon options on both sides -->
+        <ion-title class="header">
+          Contact List
+        </ion-title>
+        <ion-item-sliding id="item100"  *ngFor="let cont of contacts">
+          <ion-item class="list" style="background-color: white;">
+            <ion-avatar slot="start">
+              <img src="https://icon-library.com/images/contact-information-icon/contact-information-icon-2.jpg" style="height: inherit; border-image-width: inherit;">
+            </ion-avatar>
+            <ion-label style="font-family:fantasy ;font-size: 20px; color: white;">
+              <h1 style="font-size: 20px;">{{cont.name}}{{cont.fname}}</h1>
+              <h1 style="font-size: 20px;">{{cont.number}}</h1>
+            </ion-label>
+          </ion-item>
+     
+          <ion-item-options side="end" id="del">
+            <ion-item-option (click)="delete(cont)" color="danger">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+            <ion-item-option style="font-size: 30px;">
+              
+
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
