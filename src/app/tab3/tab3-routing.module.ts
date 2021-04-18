@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Tab3Page } from './tab3.page';
+import {MessagePageModule} from '../../app/message/message.module';
 
 const routes: Routes = [
   {
     path: '',
     component: Tab3Page,
+  },
+  {
+    path: 'message',
+    loadChildren: () => import('../../app/message/message.module').then (m => m.MessagePageModule)
   }
 ];
 

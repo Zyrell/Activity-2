@@ -2,6 +2,7 @@
 import { Component } from '@angular/core';
 import { ContactServiceService } from '../services/contact-service.service';
 import { AlertController } from '@ionic/angular';
+import {MessagePageModule} from '../../app/message/message.module';
 
 @Component({
   selector: 'app-tab3',
@@ -39,7 +40,7 @@ export class Tab3Page {
       message: '',
       buttons: [
         {
-          text: 'No',
+          text: 'cancel',
           role: 'cancel',
           cssClass: 'icon-color',
           handler: () => {
