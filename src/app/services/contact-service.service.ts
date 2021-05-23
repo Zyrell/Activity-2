@@ -1,65 +1,44 @@
 import { Injectable } from '@angular/core';
-import { Plugins } from '@capacitor/core';
+import {Plugins} from '@capacitor/core';
 const { Camera, Filesystem, Storage } = Plugins;
+import { AngularFireDatabase, AngularFireList, AngularFireObject } from '@angular/fire/database';
+import { ConvertActionBindingResult } from '@angular/compiler/src/compiler_util/expression_converter';
+import { Contact } from './contact';
+
 @Injectable({
   providedIn: 'root'
 })
 
-
-
 export class ContactServiceService {
+  contactListRef: AngularFireList<any>;
+  contactRef: AngularFireObject<any>;
+  aptService: any;
 
-  DATA_STORAGE = 'data';
-  constructor() { }
+  constructor(private db: AngularFireDatabase) { }
 
-  /**
-   * Save contact into local storage 
-   * get first data and iterate save to temporary variable and insert new data.
-   * @param param 
-   * @returns 
-   */
-  saveContact(param: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getData().then(data => {
-        let tempContact = [];
-        for (let i = 0; i < data.length; i++) {
-          tempContact.push(data[i]);
-        }
-        tempContact.push(param);
-        Storage.set({ key: this.DATA_STORAGE, value: JSON.stringify(tempContact) });
-        resolve(tempContact);
-      })
-    });
-  }
-
-
-
-  /*
-   * Removing contact from the local storage.
-   * Remove first existing storage and set new data.
-  */
-  removeContact(index): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getData().then(data => {
-        data.splice(index, 1);
-        console.log(data);
-        Storage.remove({ key: this.DATA_STORAGE })
-        Storage.set({ key: this.DATA_STORAGE, value: JSON.stringify(data) });
-        resolve(data);
-      })
+  // Create
+  createContact(cont: Contact) {
+    return this.contactListRef.push({
+      name: cont.name + " " + cont.familyname,
+      number: cont.number
     })
   }
 
-  /**
-   * Retrieve data from local storage and convert to JSON
-   * @returns local storage (this.DATA_STORAGE)
-   */
-  public async getData() {
-    const cont = await Storage.get({ key: this.DATA_STORAGE });
-    return JSON.parse(cont.value) || [];
+  // Get Single
+  getContact(id: string) {
+    this.contactRef = this.db.object('/contact/' + id);
+    return this.contactRef;
   }
 
+  // Get List
+  getContactList() {
+    this.contactListRef = this.db.list('/contact');
+    return this.contactListRef;
+  }
 
-
-
+  // Delete
+  deleteContact(id: string) {
+    this.contactRef = this.db.object('/contact/' + id);
+    this.contactRef.remove();
+  }
 }
